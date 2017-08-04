@@ -1,8 +1,8 @@
 
 # TV Script Generation
-In this project, you'll generate your own [Simpsons](https://en.wikipedia.org/wiki/The_Simpsons) TV scripts using RNNs.  You'll be using part of the [Simpsons dataset](https://www.kaggle.com/wcukierski/the-simpsons-by-the-data) of scripts from 27 seasons.  The Neural Network you'll build will generate a new TV script for a scene at [Moe's Tavern](https://simpsonswiki.com/wiki/Moe's_Tavern).
+In this project, I'll use the computer to generate a small [Simpsons](https://en.wikipedia.org/wiki/The_Simpsons) TV scripts using RNNs (Recurrent Neural Networks).  I'll be using part of the [Simpsons dataset](https://www.kaggle.com/wcukierski/the-simpsons-by-the-data) of scripts from 27 seasons.  The Neural Network built build will generate a new TV script for a tiny scene at [Moe's Tavern](https://simpsonswiki.com/wiki/Moe's_Tavern).
 ## Get the Data
-The data is already provided for you.  You'll be using a subset of the original dataset.  It consists of only the scenes in Moe's Tavern.  This doesn't include other versions of the tavern, like "Moe's Cavern", "Flaming Moe's", "Uncle Moe's Family Feed-Bag", etc..
+This is only a subset of the original dataset.  It consists of only the scenes in Moe's Tavern.  This doesn't include other versions of the tavern, like "Moe's Cavern", "Flaming Moe's", "Uncle Moe's Family Feed-Bag", etc..
 
 
 ```python
@@ -105,9 +105,9 @@ tests.test_create_lookup_tables(create_lookup_tables)
     
 
 ### Tokenize Punctuation
-We'll be splitting the script into a word array using spaces as delimiters.  However, punctuations like periods and exclamation marks make it hard for the neural network to distinguish between the word "bye" and "bye!".
+I'll be splitting the script into a word array using spaces as delimiters.  However, punctuations like periods and exclamation marks make it hard for the neural network to distinguish between the word "bye" and "bye!".
 
-Implement the function `token_lookup` to return a dict that will be used to tokenize symbols like "!" into "||Exclamation_Mark||".  Create a dictionary for the following symbols where the symbol is the key and value is the token:
+That is why I have to implement the function `token_lookup` to return a dict that will be used to tokenize symbols like "!" into "||Exclamation_Mark||".  I'll create a dictionary for the following symbols where the symbol is the key and value is the token:
 - Period ( . )
 - Comma ( , )
 - Quotation Mark ( " )
@@ -119,7 +119,7 @@ Implement the function `token_lookup` to return a dict that will be used to toke
 - Dash ( -- )
 - Return ( \n )
 
-This dictionary will be used to token the symbols and add the delimiter (space) around it.  This separates the symbols as it's own word, making it easier for the neural network to predict on the next word. Make sure you don't use a token that could be confused as a word. Instead of using the token "dash", try using something like "||dash||".
+This dictionary will be used to token the symbols and add the delimiter (space) around it.  This separates the symbols as it's own word, making it easier for the neural network to predict on the next word. To make sure that a token could be confused as a word instead of using the token "dash" I used something like "||dash||".
 
 
 ```python
@@ -156,7 +156,7 @@ helper.preprocess_and_save_data(data_dir, token_lookup, create_lookup_tables)
 ```
 
 # Check Point
-This is your first checkpoint. If you ever decide to come back to this notebook or have to restart the notebook, you can start from here. The preprocessed data has been saved to disk.
+Here's the first checkpoint. If you ever decide to come back to this notebook or have to restart the notebook, you can start from here. The preprocessed data has been saved to disk.
 
 
 ```python
@@ -171,7 +171,7 @@ int_text, vocab_to_int, int_to_vocab, token_dict = helper.load_preprocess()
 ```
 
 ## Build the Neural Network
-You'll build the components necessary to build a RNN by implementing the following functions below:
+Here I build the components necessary to build a RNN by implementing the following functions below:
 - get_inputs
 - get_init_cell
 - get_embed
@@ -208,7 +208,7 @@ else:
     
 
 ### Input
-Implement the `get_inputs()` function to create TF Placeholders for the Neural Network.  It should create the following placeholders:
+The `get_inputs()` function creates TF Placeholders for the Neural Network.  It creates the following placeholders:
 - Input text placeholder named "input" using the [TF Placeholder](https://www.tensorflow.org/api_docs/python/tf/placeholder) `name` parameter.
 - Targets placeholder
 - Learning Rate placeholder
@@ -237,12 +237,12 @@ tests.test_get_inputs(get_inputs)
     
 
 ### Build RNN Cell and Initialize
-Stack one or more [`BasicLSTMCells`](https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/BasicLSTMCell) in a [`MultiRNNCell`](https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/MultiRNNCell).
-- The Rnn size should be set using `rnn_size`
-- Initalize Cell State using the MultiRNNCell's [`zero_state()`](https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/MultiRNNCell#zero_state) function
-    - Apply the name "initial_state" to the initial state using [`tf.identity()`](https://www.tensorflow.org/api_docs/python/tf/identity)
+Stacking one or more [`BasicLSTMCells`](https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/BasicLSTMCell) in a [`MultiRNNCell`](https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/MultiRNNCell).
+- The Rnn size is set using `rnn_size`
+- Initalizing Cell State using the MultiRNNCell's [`zero_state()`](https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/MultiRNNCell#zero_state) function
+    - Applying the name "initial_state" to the initial state using [`tf.identity()`](https://www.tensorflow.org/api_docs/python/tf/identity)
 
-Return the cell and initial state in the following tuple `(Cell, InitialState)`
+Returning the cell and initial state in the following tuple `(Cell, InitialState)`
 
 
 ```python
@@ -268,7 +268,7 @@ tests.test_get_init_cell(get_init_cell)
     
 
 ### Word Embedding
-Apply embedding to `input_data` using TensorFlow.  Return the embedded sequence.
+Applying embedding to `input_data` using TensorFlow.  Return the embedded sequence.
 
 
 ```python
@@ -295,11 +295,11 @@ tests.test_get_embed(get_embed)
     
 
 ### Build RNN
-You created a RNN Cell in the `get_init_cell()` function.  Time to use the cell to create a RNN.
-- Build the RNN using the [`tf.nn.dynamic_rnn()`](https://www.tensorflow.org/api_docs/python/tf/nn/dynamic_rnn)
- - Apply the name "final_state" to the final state using [`tf.identity()`](https://www.tensorflow.org/api_docs/python/tf/identity)
+After creating a RNN Cell in the `get_init_cell()` function it is time to use the cell to create a RNN.
+- Building the RNN using the [`tf.nn.dynamic_rnn()`](https://www.tensorflow.org/api_docs/python/tf/nn/dynamic_rnn)
+ - Applying the name "final_state" to the final state using [`tf.identity()`](https://www.tensorflow.org/api_docs/python/tf/identity)
 
-Return the outputs and final_state state in the following tuple `(Outputs, FinalState)` 
+Returning the outputs and final_state state in the following tuple `(Outputs, FinalState)` 
 
 
 ```python
@@ -326,12 +326,12 @@ tests.test_build_rnn(build_rnn)
     
 
 ### Build the Neural Network
-Apply the functions you implemented above to:
-- Apply embedding to `input_data` using your `get_embed(input_data, vocab_size, embed_dim)` function.
-- Build RNN using `cell` and your `build_rnn(cell, inputs)` function.
-- Apply a fully connected layer with a linear activation and `vocab_size` as the number of outputs.
+Applying the functions you implemented above to:
+- Applying embedding to `input_data` using your `get_embed(input_data, vocab_size, embed_dim)` function.
+- Building RNN using `cell` and your `build_rnn(cell, inputs)` function.
+- Applying a fully connected layer with a linear activation and `vocab_size` as the number of outputs.
 
-Return the logits and final state in the following tuple (Logits, FinalState) 
+Returning the logits and final state in the following tuple (Logits, FinalState) 
 
 
 ```python
@@ -367,11 +367,11 @@ tests.test_build_nn(build_nn)
     
 
 ### Batches
-Implement `get_batches` to create batches of input and targets using `int_text`.  The batches should be a Numpy array with the shape `(number of batches, 2, batch size, sequence length)`. Each batch contains two elements:
+Implementing `get_batches` to create batches of input and targets using `int_text`.  The batches should be a Numpy array with the shape `(number of batches, 2, batch size, sequence length)`. Each batch contains two elements:
 - The first element is a single batch of **input** with the shape `[batch size, sequence length]`
 - The second element is a single batch of **targets** with the shape `[batch size, sequence length]`
 
-If you can't fill the last batch with enough data, drop the last batch.
+If it is not possible to fill the last batch with enough data, drop the last batch.
 
 For exmple, `get_batches([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], 3, 2)` would return a Numpy array of the following:
 ```
@@ -483,7 +483,7 @@ save_dir = './save'
     
 
 ### Build the Graph
-Build the graph using the neural network you implemented.
+Building the graph using the implemented neural network.
 
 
 ```python
@@ -519,7 +519,7 @@ with train_graph.as_default():
 ```
 
 ## Train
-Train the neural network on the preprocessed data.  If you have a hard time getting a good loss, check the [forms](https://discussions.udacity.com/) to see if anyone is having the same problem.
+Training the neural network on the preprocessed data.  
 
 
 ```python
