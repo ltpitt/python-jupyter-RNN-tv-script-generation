@@ -15,7 +15,7 @@ packaging==16.8
 pandocfilters==1.4.1
 pickleshare==0.7.4
 protobuf==5.29.6
-Pygments==2.15.0
+Pygments==2.20.0
 python-dateutil==2.6.0
 pyzmq==16.0.2
 qtconsole==4.3.0
